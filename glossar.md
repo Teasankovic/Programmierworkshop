@@ -61,4 +61,19 @@ contains the compiler and everything needed to build java programms
 ## JVM 
 runs your compiled program on any operating system 
 
-## 
+## IntelliJ "Anleitung + Vokabeln"
+Neues Verzeichnis = mkdir "Name der Datei"
+cd .. = Change Directory 
+Neue Datei = touch "Datei name"
+ls = List manager
+rm = Remove 
+cat "Datei "  = Inhalt wird ausgegeben
+clear = löscht die Kommando Zeile
+cp = copy == "Datei name" "Neuer Datei name" --> Die neue Datei besitzt den gleichen inhalt wie die alt 
+mv = move --> Datei kann verschoben werden oder umbenannt
+
+GitHub: 
+git status = schauen ob etwas nicht commitet wurde 
+1) git add . = Datei wird hinzugefügt 
+2) git commit -m "Was man mit derf datei gemacht hat" Datei Name 
+3) git push origin main = Fügt die neue datei hinzu/ updated änderungen die man vorgenommen hat 
