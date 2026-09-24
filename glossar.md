@@ -77,3 +77,37 @@ git status = schauen ob etwas nicht commitet wurde
 1) git add . = Datei wird hinzugefügt 
 2) git commit -m "Was man mit derf datei gemacht hat" Datei Name 
 3) git push origin main = Fügt die neue datei hinzu/ updated änderungen die man vorgenommen hat 
+
+## Arrays
+
+stores multiple values of the same type in one variable 
+to create arrays you must use []
+there is a fixed size in lenght 
+
+## bedeutung von(String[] args)
+String[]: Das eckige Klammerpaar [] zeigt an, dass es sich um ein Array handelt. Die Elemente darin sind vom Datentyp String (Zeichenketten / Text)
+.args: Steht als Kurzform für arguments (Argumente). Es ist der Name der Variablen, der frei gewählt werden kann (z. B. myParams oder input), wobei args der allgemeine Standard ist
+
+## List oder Arraylist
+can only store objects 
+primitives need "wrapper" --> int wird zu Integer; double wird zu Double; char wird zu Character
+
+## Methoden 
+werden einmal geschreiben man kann sie aber wiederverwenden
+
+## Void 
+ist eine leere funktion die verarbeitet wird. aber nochmal recherchieren
+
+## Loop 
+for-loop: best when you know how many times to0 repeat 
+Structure: initialization - condition - step
+while-loop: repeats as long as a condition stays true 
+do-while-loop: like while, but always runs at least once 
+
+## was steckt hinter Server und die verbindung zu clients 
+Damals waren server while true loops 
+
+## Singleton --> recherchieren 
+
+## clean code standard
+
