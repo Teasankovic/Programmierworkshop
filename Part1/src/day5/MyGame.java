@@ -113,91 +113,11 @@ public class MyGame {
         System.out.println("\n❌ Invalid input. Please choose 1, 2, or 3.");
     }
 }
-
-      /*  private static void checkpoint3Security() {
-            System.out.println("--- 🏁 CHECKPOINT 3: THE CORRIDOR ---\n" +
-                    "You reach the hallway leading to the vault. A night guard is strolling around.\n" +
-
-                    "He is standing right between you and the diamonds. How do you get past him?");
-
-            System.out.println("[1] Camera hacking: Start the robot vacuum at the other end as a distraction");
-            System.out.println("[2] Mechanically sabotage the fuse box on the wall");
-
-            String wahl = holeEingabe();
-
-            if (wahl.equals("1")) {
-                System.out.println("\n🚨 The distance is too big so the robot vacuum doesn't start\n" +
-                        " and the Guard turns around and sees you!");
-                        triggerGameOver(3);
-
-            } else if (wahl.equals("2")) {
-                System.out.println("\nYou are standing in front of the metal cover of the electrical box.");
-
-                if (nutzeItem("screwdriver")) {
-                    System.out.println("\n*Fizz!* A short circuit extinguishes all the lights. The guard curses in the dark.");
-
-                    System.out.println("[1] Use the absolute darkness and walk past quietly");
-                    System.out.println("[2] Run loudly while he can't see");
-
-                    String unterWahl = holeEingabe();
-                    if (unterWahl.equals("1")) {
-                        System.out.println("\nYou slip past him silently, like a ghost.");
-                        checkpoint = 4;
-                    } else if (unterWahl.equals("2")) {
-                        System.out.println("\n🚨 He hears your heavy footsteps and fires blindly in your direction—a hit!");
-                        triggerGameOver(3);
-                    } else {
-                        System.out.println("\n❌ Invalid input. Please choose 1 or 2.");
-                    }
-                }
-
-            }
-        }
-        private static void checkpoint4Treasure() {
-            System.out.println("--- 🏁 CHECKPOINT 4: THE TREASURY ---\n" +
-                    "You are standing in the Galerie d'Apollon. Before you, Le Régent and Le Sancy are sparkling!\n" +
-                    "But red laser beams guard them. How do you proceed?");
-
-            System.out.println("[1] Shatter the display case glass directly using the glass cutter");
-            System.out.println("[2] Use the hacking system to disable the lasers for 30 seconds");
-
-            String wahl = holeEingabe();
-
-            if (wahl.equals("1")) {
-                System.out.println("\n🚨 The glass has alarm sensors! Iron bars drop down and trap you.");
-                triggerGameOver(4);
-            } else if (wahl.equals("2")) {
-                System.out.println("\nThe lasers go out! A timer ticks away relentlessly: 30... 29... 28...");
-
-                if (nutzeItem("lockpicks")) {
-                    System.out.println("\n*Click.* The lock pops open! The diamonds land in the duffel bag.\n" +
-                            "The alarm sirens start wailing (weight sensor)! You have 5 seconds left.\n" +
-                            "Do you leave your signature?");
-                    System.out.println("[1] No time! Run straight to the escape window");
-                    System.out.println("[2] Open the duffel bag and use the red spray can");
-
-                    String letzteWahl = holeEingabe();
-                    if (letzteWahl.equals("2")) {
-                        System.out.println("\n*Shhh!* A large, red smiley face adorns the empty display case. Gotta have style!");
-                    }
-                    else if (letzteWahl.equals("1")) {
-                        System.out.println("Why did you chicken out now? That was always your Trademark ☹️😤");
+// Checkpoint 3 & 4 müssen noch hinzugefügt werden
 
 
-                    System.out.println("\n🏆 😏😜--- MISSION SUCCESSFUL ---🤑🥴 🏆\n" +
-                            "You jump through the window onto the escape roof. Down below, the police search in vain.\n" +
-                            "Paris is asleep, but Viki remains the undisputed number one in the world!");
-                    scanner.close();
-                    System.exit(0);
-                } else {
-                    System.out.println("\n🚨 Wrong tool! Time is running out; the lasers are frying your gear.");
-                    triggerGameOver(4);
-                }
-            } else {
-                System.out.println("\n❌ Invalid Input. Please choose 1 or 2.");
-            }
-        }
-    }*/
+
+
 
 private static String holeEingabe() {
     System.out.print("Your Choice: ");
