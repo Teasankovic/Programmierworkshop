@@ -11,6 +11,7 @@ public class MyGame {
     static Scanner scanner = new Scanner(System.in);
     static List<String> inventar = new ArrayList<>();
     private static int checkpoint = 1;
+//KP was für ein getter oder setter hier sinn machen würde man
 
     static void main(String[] args) {
         inventar.add("Spraypaint" + " 🫟");
@@ -55,42 +56,59 @@ public class MyGame {
                 AND YOU DONT WANT TO STOP THE FUN!!!
                 """);
 
-        System.out.println("With your Duffelbag and your tools you make your way to the Museum");
-        System.out.println("--- 🏁 CHECKPOINT 1: INFRONT OF THE MUSEUM ---\n" +
-                "You stand in the shadows of the Louvre.\n" +
-                "How do you break in?");
-        System.out.println("[1] Use the basement window on the Backside of the Westwing");
-        System.out.println("[2] The Roof Hatch directly over the Sculpture Gallery");
+        //Die Handschuhe durch die eingabe am start anziehen!! erledigt //
+        System.out.println("Are you ready? We have to hide our fingerprints....");
 
-        String wahl = holeEingabe();
-        if (wahl.equals("1")) {
-            System.out.println("\nViki sneeks to the basement window. It's made out of massive steel witih a thick Lock.\n" +
-                    "❌ System-Meldung: You don't have a crowbar! Thats the wrong way.");
-        } else if (wahl.equals("2")) {
-            System.out.println("\nYou skillfully climb the scaffolding on the façade up to the glass roof hatch.\n" +
+        {
 
-                    "How do you open it?");
-            System.out.println("[1] Smash in the glass with your fist, making a loud noise\"");
-            System.out.println("[2] Open the duffel bag and use a tool\"");
 
-            String wahlHatch = holeEingabe(); {
+            boolean nutzeItem = nutzeItem("gloves");
+            {
+                System.out.println("Okay, lets have fun!");
+                //Finde den grund für die doppelte eingabe der handschuhe nicht
+                // doch hab eingabe zwei mal im code gehabt
 
-                if (wahlHatch.equals("1")) {
-                    System.out.println("\n🚨 The glass shatters loudly! Sirens wail instantly!");
-                    triggerGameOver(1);
-                } else if (wahlHatch.equals("2")) {
-                    if (nutzeItem("glass cutter")) {
-                        System.out.println("\nPerfect! You cut a circle into the glass and rappel down.\n");
-                        checkpoint = 2; // Aufstieg in den nächsten Abschnitt
-                    } else {
-                        System.out.println("\nThis item doesn't help here. The lock has no keyhole.\n");
-                        // Spieler bleibt bei Checkpoint 1 und wird oben neu gefragt
+
+                System.out.println("With your Duffelbag and your tools you make your way to the Museum");
+
+                System.out.println("--- 🏁 CHECKPOINT 1: INFRONT OF THE MUSEUM ---\n" +
+                        "You stand in the shadows of the Louvre.\n" +
+                        "How do you break in?");
+                System.out.println("[1] Use the basement window on the Backside of the Westwing");
+                System.out.println("[2] The Roof Hatch directly over the Sculpture Gallery");
+
+                String wahl = holeEingabe();
+                if (wahl.equals("1")) {
+                    System.out.println("\nViki sneeks to the basement window. It's made out of massive steel witih a thick Lock.\n" +
+                            "❌ System-Meldung: You don't have a crowbar! Thats the wrong way.");
+                } else if (wahl.equals("2")) {
+                    System.out.println("\nYou skillfully climb the scaffolding on the façade up to the glass roof hatch.\n" +
+
+                            "How do you open it?");
+                    System.out.println("[1] Smash in the glass with your fist, making a loud noise\"");
+                    System.out.println("[2] Open the duffel bag and use a tool\"");
+
+                    String wahlHatch = holeEingabe();
+                    {
+
+                        if (wahlHatch.equals("1")) {
+                            System.out.println("\n🚨 The glass shatters loudly! Sirens wail instantly!");
+                            triggerGameOver(1);
+                        } else if (wahlHatch.equals("2")) {
+                            if (nutzeItem("glass cutter")) {
+                                System.out.println("\nPerfect! You cut a circle into the glass and rappel down.\n");
+                                checkpoint = 2; // Aufstieg in den nächsten Abschnitt
+                            } else {
+                                System.out.println("\nThis item doesn't help here. The lock has no keyhole.\n");
+                                // Spieler bleibt bei Checkpoint 1 und wird oben neu gefragt
+                            }
+                        } else {
+                            System.out.println("\n❌ Ungültige Eingabe. Bitte wähle 1 oder 2.");
+                        }
                     }
-                } else {
-                    System.out.println("\n❌ Ungültige Eingabe. Bitte wähle 1 oder 2.");
+
                 }
             }
-
         }
     }
     private static void checkpoint2Gallery() {
@@ -183,7 +201,7 @@ public class MyGame {
                 if (letzteWahl.equals("2")) {
                     System.out.println("\n*Shhh!* A large, red smiley face adorns the empty display case. Gotta have style!");
                 } else if (letzteWahl.equals("1")) {
-                    System.out.println("Why did you chicken out now? That was always your Trademark ☹️😤");
+                    System.out.println("Why did you chicken out now? That's always your Trademark ☹️😤");
                 } else {
                     System.out.println("\n❌ Invalid input. Please choose 1 or 2.");
                     gueltigeWahl = false;
