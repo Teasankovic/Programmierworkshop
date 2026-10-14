@@ -1,7 +1,6 @@
-package comingProjects;
+package SnakeProjectforFebrurar;
 
 import javax.swing.*;
-import java.awt.image.ImageObserver;
 
 public class SNAKE {
     //Länge und breite des spiel fensters bestimmen

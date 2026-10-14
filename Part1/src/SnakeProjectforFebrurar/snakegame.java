@@ -1,4 +1,4 @@
-package comingProjects;
+package SnakeProjectforFebrurar;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -53,7 +53,7 @@ public class snakegame extends JPanel implements ActionListener {
             }
         });
 
-        new Timer(1000 / FRAME_RATE, this).start();
+        new Timer(1650 / FRAME_RATE, this).start();
     }
 
     private void handleKeyEvent(final int keyCode) {
@@ -137,7 +137,7 @@ public class snakegame extends JPanel implements ActionListener {
             graphics.fillRect(point.x, point.y, cellSize, cellSize);
 
             final int newGreen =
-                    (int) Math.round(snakeColor.getGreen() * 0.95);
+                    (int) Math.round(snakeColor.getGreen() * 0.98);
 
             snakeColor = new Color(0, newGreen, 0);
         }
