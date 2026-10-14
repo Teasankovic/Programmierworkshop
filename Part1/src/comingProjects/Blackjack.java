@@ -1,6 +1,7 @@
 package comingProjects;
 
-public class Blackjack {
+import javax.swing.*;
+
 /* Ich brauche:
 Suits
 Anzahl der karten
@@ -12,4 +13,3 @@ runden
 Evtl. Einsatz mit startkapital
 
  */
-}
