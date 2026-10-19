@@ -57,7 +57,7 @@ public class snakegame extends JPanel implements ActionListener {
             }
         });
 
-        new Timer(1650 / FRAME_RATE, this).start();
+        new Timer(1500 / FRAME_RATE, this).start();
     }
 
     private void handleKeyEvent(final int keyCode) {
@@ -67,25 +67,25 @@ public class snakegame extends JPanel implements ActionListener {
             }
         } else if (!gameOver) {
             switch (keyCode) {
-                case KeyEvent.VK_UP:
+                case KeyEvent.VK_UP, KeyEvent.VK_W:
                     if (direction != Direction.DOWN) {
                         newDirection = Direction.UP;
                     }
                     break;
 
-                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_DOWN, KeyEvent.VK_S:
                     if (direction != Direction.UP) {
                         newDirection = Direction.DOWN;
                     }
                     break;
 
-                case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_RIGHT, KeyEvent.VK_D:
                     if (direction != Direction.LEFT) {
                         newDirection = Direction.RIGHT;
                     }
                     break;
 
-                case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_LEFT, KeyEvent.VK_A:
                     if (direction != Direction.RIGHT) {
                         newDirection = Direction.LEFT;
                     }
@@ -176,8 +176,7 @@ public class snakegame extends JPanel implements ActionListener {
                 highScore = currentScore;
             }
 
-            printMessage(
-                    graphics,
+            printMessage(graphics,
                     "Your Score: " + currentScore
                             + "\nHigh Score: " + highScore
                             + "\nPress Space Bar to Reset"
@@ -191,32 +190,24 @@ public class snakegame extends JPanel implements ActionListener {
             // Apfel zeichnen
             graphics.setColor(Color.RED);
 
-            graphics.fillOval(
-                    food.x + 2,
-                    food.y + 2,
-                    cellSize - 4,
-                    cellSize - 4
+            graphics.fillOval(food.x + 2, food.y + 2, cellSize - 4, cellSize - 4
             );
 
             // Blatt des Apfels zeichnen
             graphics.setColor(Color.GREEN);
 
-            graphics.fillOval(
-                    food.x + cellSize / 2,
-                    food.y,
-                    cellSize / 3,
-                    cellSize / 4
+            graphics.fillOval(food.x + cellSize / 2, food.y, cellSize / 3, cellSize / 4
             );
         }
     }
 
     private void drawChessboard(final Graphics graphics) {
-        final Color lightColor = new Color(0, 31, 53);
+        final Color lightColor = new Color(0, 37, 64);
         final Color darkColor = new Color(0, 21, 41);
 
         for (int y = 0; y < height; y += cellSize) {
             for (int x = 0; x < width; x += cellSize) {
-                final int column = x / cellSize;
+                final int column = x / cellSize ; // wenn cellsize *2 gerechnet wird dann verdoppelt sich das schachbrett gritt
                 final int row = y / cellSize;
 
                 if ((row + column) % 2 == 0) {
