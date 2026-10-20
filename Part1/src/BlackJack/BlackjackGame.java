@@ -1,13 +1,15 @@
 package BlackJack;
 
-
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
 public class BlackjackGame {
+private int startPlayerMoney = 1000;
+private char currency = '$';
         private class Card {
             String value;
             String type;
@@ -16,12 +18,10 @@ public class BlackjackGame {
                 this.value = vlaue;
                 this.type = type;
             }
-            public String toString(){
-                return value + "-" + type;
-            }
+            public String toString(){return value + "-" + type;}
             public int getValue(){
                 if ("AJQK".contains(value)) { // A,J,Q,K
-                    if(value == "A") {
+                    if(value.equalsIgnoreCase( "A")) { //Man sollte nicht strings mit "==" vergleichen sondern "".equalsIgnoreCase!
                         return 11;
                     }
                     return 10;
@@ -29,11 +29,11 @@ public class BlackjackGame {
                 return Integer.parseInt(value); // 2 -10
             }
             public boolean isAce(){
-              return value == "A";
+              return value.equalsIgnoreCase( "A");
             }
 
             public String getImagePath() {
-                return "./Cards/" + toString() + ".png";
+                return "./Cards/" + value + "-" + type + ".png";
             }
         }
         ArrayList<Card> deck;
@@ -52,7 +52,7 @@ public class BlackjackGame {
 
     //window
     int boardWidth = 600;
-    int boardHeight = boardWidth;
+    int boardHeight = 600;
 
     //card größe
     int cardWidth = 110; // ratio should be 1/1.4
@@ -76,15 +76,25 @@ public class BlackjackGame {
             //Draw dealers hand
             for (int i = 0; i < dealerHand.size(); i++) {
                 Card card = dealerHand.get(i);
-                Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                URL path = getClass().getResource(card.getImagePath());
+                if (path == null) {
+                   System.out.println("FEHLER" + card.getImagePath());
+                }
+                Image cardImg = new ImageIcon((getClass().getResource(card.getImagePath()))).getImage();
                 graphics.drawImage(cardImg, cardWidth + 30 + (cardWidth + 5) * i, 20, cardWidth, cardHeigth, null);
             }
             // draw player hand
             for (int i = 0; i < playerHand.size(); i++) {
                 Card card = playerHand.get(i);
-                Image cardImg = new ImageIcon(getClass().getResource(card.getImagePath())).getImage();
+                Image cardImg = new ImageIcon((getClass().getResource(card.getImagePath()))).getImage();
                 graphics.drawImage(cardImg, 20 + (cardWidth + 5) * i, 320, cardWidth, cardHeigth, null);
             }
+            // Geld für den spieler
+            graphics.setFont(new Font("Arial", Font.BOLD, 13));
+            graphics.setColor(Color.WHITE);
+            String startMoneyP = "Player Money total: " +currency + startPlayerMoney;
+            graphics.drawString(startMoneyP, 400, 460);
+
         // Spieler karten summe anzeigen
             graphics.setFont(new Font("Arial", Font.BOLD, 15));
             graphics.setColor(Color.WHITE);
@@ -102,26 +112,39 @@ public class BlackjackGame {
 
                 String message = "";
                 if (playerSum > 21) {
-                    message = "Your Loose!";
+                    message = "You Loose!";
+                    startPlayerMoney -= 320;
+
                 } else if (dealerSum > 21) {
                     message = "You Win!";
+                    startPlayerMoney += 300;
                 }
                 //wenn beides nicht zustimmt dann
                 else if (playerSum == dealerSum) {
                     message = "Tie!";
+                    startPlayerMoney += 150;
                 } else if ( playerSum > dealerSum) {
                     message = "You Win!";
+                    startPlayerMoney += 300;
                 } else if (playerSum < dealerSum) {
                     message = "You Loose!";
+                    startPlayerMoney -= 320;
                 }
 
+                if (startPlayerMoney < 320) {
+                    graphics.setFont(new Font("Arial", Font.BOLD, 14));
+                    graphics.setColor(Color.WHITE);
+                    graphics.drawString("You don't have enough Money to Loose anymore!", 90, 280);
+                    graphics.drawString("Play right, your Money depends on it", 150, 300);
+                }
 
             graphics.setFont(new Font("Arial", Font.BOLD, 30));
                 graphics.setColor(Color.WHITE);
-                graphics.drawString(message, 220, 250);
+                graphics.drawString(message, 200, 250);
 
             }
-            } catch(Exception e){
+            }
+                catch(Exception e){
                 e.printStackTrace();
 
             }
@@ -165,6 +188,10 @@ public class BlackjackGame {
                     playerHand.add(card);
                     if (reducePlayerAce() > 21) { // A + 2 J --> 1 +2 +J
                         hitButton.setEnabled(false);
+                        stayButton.setEnabled(false); //hier festgelegt das auch der stay button nicht betätigt werden kann und es ein game over oder win geben wird
+                    } else if (reducePlayerAce() == 21) {
+                        hitButton.setEnabled(false);
+                        stayButton.setEnabled(false); // ja vallah ich war so schlau das geht auch automatiesiert für wenn man 21 glatt hinbekommt WUHUUU
                     }
                     gamePanel.repaint();
                 }
