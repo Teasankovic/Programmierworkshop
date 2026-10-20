@@ -90,10 +90,10 @@ private char currency = '$';
                 graphics.drawImage(cardImg, 20 + (cardWidth + 5) * i, 320, cardWidth, cardHeigth, null);
             }
             // Geld für den spieler
-            graphics.setFont(new Font("Arial", Font.BOLD, 13));
+            graphics.setFont(new Font("Arial", Font.BOLD, 14));
             graphics.setColor(Color.WHITE);
             String startMoneyP = "Player Money total: " +currency + startPlayerMoney;
-            graphics.drawString(startMoneyP, 400, 460);
+            graphics.drawString(startMoneyP, 200, 501);
 
         // Spieler karten summe anzeigen
             graphics.setFont(new Font("Arial", Font.BOLD, 15));
