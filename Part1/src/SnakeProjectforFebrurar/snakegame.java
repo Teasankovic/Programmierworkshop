@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.prefs.Preferences;
 
 public class snakegame extends JPanel implements ActionListener {
 
@@ -23,21 +24,28 @@ public class snakegame extends JPanel implements ActionListener {
     private final int cellSize;
     private final Random random = new Random();
     private static final int FRAME_RATE = 20;
-    // Anzahl der Äpfel im Spiel
-    private static final int NUMBER_OF_APPLES = 5;
+    private static final int NUMBER_OF_APPLES = 400;
+    private static final String HIGH_SCORE_KEY = "highScore";
+
+    // Speicherort für Highscore
+    private final Preferences preferences =
+            Preferences.userNodeForPackage(snakegame.class);
+
     private boolean gameStarted = false;
     private boolean gameOver = false;
     private int highScore;
-    // Liste für mehrere Äpfel
     private final List<GamePoint> foods = new ArrayList<>();
+    private final List<GamePoint> snake = new ArrayList<>();
     private Direction direction = Direction.RIGHT;
     private Direction newDirection = Direction.RIGHT;
-    private final List<GamePoint> snake = new ArrayList<>();
 
     public snakegame(final int width, final int height) {
         this.width = width;
         this.height = height;
         this.cellSize = width / (FRAME_RATE * 2);
+
+        // Gespeicherten Highscore laden
+        highScore = preferences.getInt(HIGH_SCORE_KEY, 0);
 
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
@@ -114,7 +122,6 @@ public class snakegame extends JPanel implements ActionListener {
                 (height / 2 / cellSize) * cellSize
         ));
 
-        // Drei Äpfel beim Start des Spiels generieren
         for (int i = 0; i < NUMBER_OF_APPLES; i++) {
             generateFood();
         }
@@ -123,7 +130,6 @@ public class snakegame extends JPanel implements ActionListener {
     private void generateFood() {
         GamePoint newFood;
 
-        // Einen neuen Apfel auf einem freien Feld generieren
         do {
             newFood = new GamePoint(
                     random.nextInt(width / cellSize) * cellSize,
@@ -134,11 +140,22 @@ public class snakegame extends JPanel implements ActionListener {
         foods.add(newFood);
     }
 
+    /**Aktualisiert und speichert den Highscore.*/
+    private void updateHighScore() {
+        final int currentScore = snake.size() - 1;
+
+        if (currentScore > highScore) {
+            highScore = currentScore;
+
+            // Highscore dauerhaft speichern
+            preferences.putInt(HIGH_SCORE_KEY, highScore);
+        }
+    }
+
     @Override
     protected void paintComponent(final Graphics graphics) {
         super.paintComponent(graphics);
 
-        // Schachbrettmuster im Hintergrund zeichnen
         drawChessboard(graphics);
 
         if (!gameStarted) {
@@ -146,10 +163,8 @@ public class snakegame extends JPanel implements ActionListener {
             return;
         }
 
-        // Essen farbe
         drawFoods(graphics);
 
-        // Schlange erstellen
         Color snakeColor = Color.GREEN;
 
         for (final GamePoint point : snake) {
@@ -168,15 +183,11 @@ public class snakegame extends JPanel implements ActionListener {
             snakeColor = new Color(0, newGreen, 0);
         }
 
-        // Game-Over-Nachricht zeichnen
         if (gameOver) {
             final int currentScore = snake.size() - 1;
 
-            if (currentScore > highScore) {
-                highScore = currentScore;
-            }
-
-            printMessage(graphics,
+            printMessage(
+                    graphics,
                     "Your Score: " + currentScore
                             + "\nHigh Score: " + highScore
                             + "\nPress Space Bar to Reset"
@@ -185,18 +196,25 @@ public class snakegame extends JPanel implements ActionListener {
     }
 
     private void drawFoods(final Graphics graphics) {
-        // Alle Äpfel erstellen. Vorlage aus dem internet
         for (final GamePoint food : foods) {
-            // Apfel zeichnen
+            // Apfel
             graphics.setColor(Color.RED);
 
-            graphics.fillOval(food.x + 2, food.y + 2, cellSize - 4, cellSize - 4
+            graphics.fillOval(
+                    food.x + 2,
+                    food.y + 2,
+                    cellSize - 4,
+                    cellSize - 4
             );
 
-            // Blatt des Apfels zeichnen
+            // Blatt
             graphics.setColor(Color.GREEN);
 
-            graphics.fillOval(food.x + cellSize / 2, food.y, cellSize / 3, cellSize / 4
+            graphics.fillOval(
+                    food.x + cellSize / 2,
+                    food.y,
+                    cellSize / 3,
+                    cellSize / 4
             );
         }
     }
@@ -207,7 +225,7 @@ public class snakegame extends JPanel implements ActionListener {
 
         for (int y = 0; y < height; y += cellSize) {
             for (int x = 0; x < width; x += cellSize) {
-                final int column = x / cellSize ; // wenn cellsize *2 gerechnet wird dann verdoppelt sich das schachbrett gritt
+                final int column = x / cellSize;
                 final int row = y / cellSize;
 
                 if ((row + column) % 2 == 0) {
@@ -230,8 +248,6 @@ public class snakegame extends JPanel implements ActionListener {
             final Graphics graphics,
             final String message
     ) {
-        // Mit mathe oder so berechnet wo der text vom spiel anfangen kommen soll
-
         graphics.setColor(Color.WHITE);
         graphics.setFont(graphics.getFont().deriveFont(30F));
 
@@ -292,21 +308,22 @@ public class snakegame extends JPanel implements ActionListener {
 
         snake.addFirst(newHead);
 
-        // Eingrenzung des Spielbereichs,
-        // damit eine Collision und Game Over entsteht
         if (isCollision()) {
             gameOver = true;
+
+            // Neuen Kopf wieder entfernen
             snake.removeFirst();
+
+            // Highscore prüfen und dauerhaft speichern
+            updateHighScore();
+
             return;
         }
 
-        // Festlegung, dass beim Essen eines Apfels
-        // eine neue Zelle generiert wird
         if (foods.contains(newHead)) {
             foods.remove(newHead);
 
-            // Neuer Apfel wird generiert,
-            // damit immer drei Äpfel im Spiel vorhanden sind
+            // Neuer Apfel, damit immer fünf Äpfel vorhanden sind
             generateFood();
         } else {
             snake.removeLast();
@@ -314,8 +331,6 @@ public class snakegame extends JPanel implements ActionListener {
     }
 
     private boolean isCollision() {
-        // Eingrenzung des spiel bereichs das eine collision und so ein game over entsteht
-
         final GamePoint head = snake.getFirst();
 
         final boolean invalidWidth =
@@ -344,7 +359,6 @@ public class snakegame extends JPanel implements ActionListener {
     }
 
     private enum Direction {
-        // Steuereung initialisiert
         UP,
         DOWN,
         RIGHT,
