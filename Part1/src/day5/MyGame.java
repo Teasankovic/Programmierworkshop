@@ -1,26 +1,22 @@
 package day5;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
+
 
 
 
 
 public class MyGame {
     static Scanner scanner = new Scanner(System.in);
-    static List<String> inventar = new ArrayList<>();
+    static Inventory inventar = new Inventory();
     private static int checkpoint = 1;
 //KP was für ein getter oder setter hier sinn machen würde man
 
     static void main(String[] args) {
-        inventar.add("Spraypaint" + " 🫟");
-        inventar.add("gloves" + " 🧤");
-        inventar.add("lockpicks" + " 🔑");
-        inventar.add("screwdriver" + " 🪛");
-        inventar.add("glass cutter" + " 🔪");
 
         System.out.println("\u001B[1mVIKI's Million Dollar Heist\u001B[0m");
+
+        // Getter und setter für das inventar machen  das inventar m´noch mit eiuner id verbinden das schreib fehler vermiede werden können
 
         while (true) {
             switch (checkpoint) {
@@ -80,7 +76,7 @@ public class MyGame {
                 String wahl = holeEingabe();
                 if (wahl.equals("1")) {
                     System.out.println("\nViki sneeks to the basement window. It's made out of massive steel witih a thick Lock.\n" +
-                            "❌ System-Meldung: You don't have a crowbar! Thats the wrong way.");
+                            "❌ System-Message: You don't have a crowbar! Thats kinda the wrong way.");
                 } else if (wahl.equals("2")) {
                     System.out.println("\nYou skillfully climb the scaffolding on the façade up to the glass roof hatch.\n" +
 
@@ -103,7 +99,7 @@ public class MyGame {
                                 // Spieler bleibt bei Checkpoint 1 und wird oben neu gefragt
                             }
                         } else {
-                            System.out.println("\n❌ Ungültige Eingabe. Bitte wähle 1 oder 2.");
+                            System.out.println("\n❌ Invalid Input. Please choose either 1 or 2");
                         }
                     }
 
@@ -201,7 +197,7 @@ public class MyGame {
                 if (letzteWahl.equals("2")) {
                     System.out.println("\n*Shhh!* A large, red smiley face adorns the empty display case. Gotta have style!");
                 } else if (letzteWahl.equals("1")) {
-                    System.out.println("Why did you chicken out now? That's always your Trademark ☹️😤");
+                    System.out.println("Why did you chicken out now? That's always your Trademark. I'm very dissapointed ☹️😤");
                 } else {
                     System.out.println("\n❌ Invalid input. Please choose 1 or 2.");
                     gueltigeWahl = false;
@@ -230,14 +226,35 @@ public class MyGame {
     }
 
     private static boolean nutzeItem(String korrektesItem) {
-        System.out.println("\n🎒 [DEIN DUFFELBAG] Enthält aktuell:");
-        for (String item : inventar) {
-            System.out.println("   - " + item);
-        }
-        System.out.print("What Item do you type in? (english Name): ");
-        String eingabe = scanner.nextLine().trim().toLowerCase();
+        inventar.showInventory();
 
-        return eingabe.equals(korrektesItem);
+        System.out.print(
+                "What Item do you type in? "
+                        + "(english Name or Inventory ID): "
+        );
+
+        String eingabe = scanner.nextLine().trim();
+
+        String ausgewaehltesItem = inventar.findItem(eingabe);
+
+        if (ausgewaehltesItem == null) {
+            System.out.println("❌ This Item doesn't exist in your Inventory.");
+            return false;
+        }
+
+        // Der Name des ausgewählten Items wird mit dem benötigten Item verglichen
+        String ausgewaehlterName =
+                ausgewaehltesItem.substring(
+                        0,
+                        ausgewaehltesItem.lastIndexOf(" ")
+                );
+
+        if (ausgewaehlterName.equalsIgnoreCase(korrektesItem)) {
+            return true;
+        }
+
+        System.out.println("❌ This isn't the correct Item. Think again.");
+        return false;
     }
 
     private static void triggerGameOver(int aktuellerCheckpoint) {
@@ -259,7 +276,7 @@ public class MyGame {
                 scanner.close();
                 System.exit(0);
             } else {
-                System.out.println("❌ Ungültige Eingabe. Bitte wähle 1 oder 2.");
+                System.out.println("❌ Invalid Input. Please choose either 1 or 2.");
             }
 
         }
