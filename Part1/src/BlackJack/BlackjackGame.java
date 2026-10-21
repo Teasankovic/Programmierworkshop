@@ -123,27 +123,55 @@ private char currency = '$';
                 else if (playerSum == dealerSum) {
                     message = "Tie!";
                     startPlayerMoney += 150;
-                } else if ( playerSum > dealerSum) {
+                } else if (playerSum > dealerSum) {
                     message = "You Win!";
                     startPlayerMoney += 300;
                 } else if (playerSum < dealerSum) {
                     message = "You Loose!";
                     startPlayerMoney -= 320;
                 }
+                graphics.setFont(new Font("Arial", Font.BOLD, 30));
+                graphics.setColor(Color.WHITE);
+                graphics.drawString(message, 200, 250);
 
-                if (startPlayerMoney < 320) {
+
+                boolean playerLoose = playerSum < dealerSum || playerSum > 21; // Zutreffende abfrage für die texte die einfliegen sollen
+                boolean playerWin = playerSum > dealerSum || dealerSum > 21;
+
+                if (startPlayerMoney < -200 && playerLoose) {
+                    graphics.setFont(new Font("Arial", Font.BOLD, 14));
+                    graphics.setColor(Color.WHITE);
+                    graphics.drawString("Your getting yourself into serious dept my friend!", 100, 280);
+                } else if (startPlayerMoney <= 50) {
+                    graphics.setFont(new Font("Arial", Font.BOLD, 14));
+                    graphics.setColor(Color.WHITE);
+                    graphics.drawString("Youre getting close to ground ZERO!", 100, 280);
+                } else if (startPlayerMoney <= 320) {
                     graphics.setFont(new Font("Arial", Font.BOLD, 14));
                     graphics.setColor(Color.WHITE);
                     graphics.drawString("You don't have enough Money to Loose anymore!", 90, 280);
                     graphics.drawString("Play right, your Money depends on it", 150, 300);
                 }
+                //Ab einem bestimmten betrage werden die spieler gelobt. kp vllt ab 1100 und aufwärts
 
-            graphics.setFont(new Font("Arial", Font.BOLD, 30));
-                graphics.setColor(Color.WHITE);
-                graphics.drawString(message, 200, 250);
 
+                if (startPlayerMoney >= 3000 && playerWin) {
+                    graphics.setFont(new Font("Arial", Font.BOLD, 14));
+                    graphics.setColor(Color.WHITE);
+                    graphics.drawString("You are whatever you want to be King", 150, 280);
+                } else if (startPlayerMoney >= 2200 && playerWin) {
+                    graphics.setFont(new Font("Arial", Font.BOLD, 14));
+                    graphics.setColor(Color.WHITE);
+                    graphics.drawString("Don't think that your a pro...", 150, 280);
+
+                } else if (startPlayerMoney >= 1600 && playerWin) {
+                    graphics.setFont(new Font("Arial", Font.BOLD, 14));
+                    graphics.setColor(Color.WHITE);
+                    graphics.drawString("On a winning streak huh?", 170, 280);
+
+                }
             }
-            }
+         }
                 catch(Exception e){
                 e.printStackTrace();
 
@@ -315,4 +343,4 @@ public void buildDeck() {
         return dealerSum;
     }
 
-}
+} 
