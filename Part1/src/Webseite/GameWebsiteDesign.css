@@ -1,0 +1,186 @@
+/* Globale Resets & Farbvariablen aus dem Firewatch-Beispiel */
+:root {
+    --bg-dark: #230c0f;      /* Tiefes Dunkelrot/Braun für den Hintergrund */
+    --accent-orange: #de6b21; /* Das ikonische Firewatch-Orange */
+    --accent-yellow: #f9a01b; /* Warmes Sonnengelb */
+    --text-light: #fce8cd;    /* Helles Cremeweiß für Text */
+    --card-bg: #36171b;       /* Etwas helleres Dunkelrot für Container */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Rubik', sans-serif;
+    overflow-x: hidden;
+}
+
+/* HEADER MIT DEM FIREWATCH-STIL GRADIENT */
+.hero-section {
+    background: linear-gradient(to bottom, #f39c12, #e67e22, #d35400, var(--bg-dark));
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+}
+
+.main-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 3.5rem;
+    color: var(--bg-dark);
+    text-shadow: 3px 3px 0px var(--accent-yellow);
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--bg-dark);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* DIE SPIELE-MATRIX */
+.main-content {
+    max-width: 1200px;
+    margin: -100px auto 0 auto; /* Schiebt den Content leicht in den Header hinein */
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.games-section {
+    background-color: var(--card-bg);
+    border: 3px solid var(--accent-orange);
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.7);
+}
+
+.section-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--accent-yellow);
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* GAME CARDS IM STIL DER DESIGN-VORLAGE */
+.game-card {
+    background-color: var(--bg-dark);
+    border: 2px solid var(--accent-orange);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 20px var(--accent-orange);
+}
+
+.game-preview-box {
+    background-color: #140507;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid var(--accent-orange);
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+}
+
+.game-info {
+    padding: 20px;
+    text-align: center;
+}
+
+.game-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--accent-yellow);
+}
+
+.game-info p {
+    font-size: 0.9rem;
+    color: #bfa3a6;
+    margin-bottom: 20px;
+    height: 40px; /* Hält Texte einheitlich */
+}
+
+/* BUTTONS */
+.play-btn {
+    background-color: var(--accent-orange);
+    color: var(--bg-dark);
+    border: none;
+    padding: 12px 24px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+.play-btn:hover {
+    background-color: var(--accent-yellow);
+}
+
+/* ZITAT-LEISTE */
+.about-section {
+    margin: 60px 0;
+    text-align: center;
+}
+
+.quote-container {
+    border-top: 1px solid var(--accent-orange);
+    border-bottom: 1px solid var(--accent-orange);
+    padding: 30px 0;
+}
+
+.quote {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--accent-yellow);
+    letter-spacing: 1px;
+}
+
+.quote-author {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #8c686d;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #140507;
+    border-top: 4px solid var(--accent-orange);
+    font-size: 0.9rem;
+    color: #8c686d;
+}
+
+.footer-logo {
+    margin-top: 15px;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--accent-orange);
+}
