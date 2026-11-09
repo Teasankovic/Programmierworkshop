@@ -1,7 +1,6 @@
 package SnakeProjectforFebrurar;
 
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -24,7 +23,7 @@ public class snakegame extends JPanel implements ActionListener {
     private final int cellSize;
     private final Random random = new Random();
     private static final int FRAME_RATE = 20;
-    private static final int NUMBER_OF_APPLES = 400;
+    private static final int NUMBER_OF_APPLES = 70;
     private static final String HIGH_SCORE_KEY = "highScore";
 
     // Speicherort für Highscore
@@ -33,6 +32,7 @@ public class snakegame extends JPanel implements ActionListener {
 
     private boolean gameStarted = false;
     private boolean gameOver = false;
+    private boolean gameWin = false;
     private int highScore;
     private final List<GamePoint> foods = new ArrayList<>();
     private final List<GamePoint> snake = new ArrayList<>();
@@ -42,7 +42,7 @@ public class snakegame extends JPanel implements ActionListener {
     public snakegame(final int width, final int height) {
         this.width = width;
         this.height = height;
-        this.cellSize = width / (FRAME_RATE * 2);
+        this.cellSize = 32;
 
         // Gespeicherten Highscore laden
         highScore = preferences.getInt(HIGH_SCORE_KEY, 0);
@@ -151,11 +151,23 @@ public class snakegame extends JPanel implements ActionListener {
             preferences.putInt(HIGH_SCORE_KEY, highScore);
         }
     }
+    private void checkPerfectWin() {
+        // 1. Berechnen, wie viele Felder das Raster in der Breite und Höhe hat
+        int totalColumns = width / cellSize;
+        int totalRows = height / cellSize;
+
+        // 2. Die Gesamtanzahl aller begehbaren Felder auf dem Spielfeld
+        int maxPossibleSnakeSize = totalColumns * totalRows;
+
+        // 3. Wenn die Schlange so groß ist wie das gesamte Spielfeld
+        if (snake.size() == maxPossibleSnakeSize) {
+            gameWin = true;
+        }
+    }
 
     @Override
     protected void paintComponent(final Graphics graphics) {
         super.paintComponent(graphics);
-
         drawChessboard(graphics);
 
         if (!gameStarted) {
@@ -165,27 +177,32 @@ public class snakegame extends JPanel implements ActionListener {
 
         drawFoods(graphics);
 
-        Color snakeColor = Color.GREEN;
+        // Gesamtanzahl der Schlangenglieder holen
+        int snakeLength = snake.size();
 
-        for (final GamePoint point : snake) {
-            graphics.setColor(snakeColor);
+        for (int i = 0; i < snakeLength; i++) {
+            final GamePoint point = snake.get(i);
 
+            // Berechnet einen Wert zwischen 0.0 (Kopf) und 1.0 (Schwanzende)
+            float ratio = (snakeLength > 1) ? (float) i / (snakeLength - 1) : 0.0f;
+
+            // Startfarbe (Kopf): Reines Grün (RGB: 0, 255, 0)
+            // Zielfarbe (Schwanz): Schönes Türkis (RGB: 0, 200, 255)
+            int r = 0;
+            int g = (int) (255 * (1.0f - ratio) + 200 * ratio);
+            int b = (int) (255 * ratio);
+
+            graphics.setColor(new Color(r, g, b));
             graphics.fillRect(
                     point.x,
                     point.y,
                     cellSize,
                     cellSize
             );
-
-            final int newGreen =
-                    (int) Math.round(snakeColor.getGreen() * 0.98);
-
-            snakeColor = new Color(0, newGreen, 0);
         }
 
         if (gameOver) {
             final int currentScore = snake.size() - 1;
-
             printMessage(
                     graphics,
                     "Your Score: " + currentScore
@@ -193,7 +210,17 @@ public class snakegame extends JPanel implements ActionListener {
                             + "\nPress Space Bar to Reset"
             );
         }
+        if (gameWin) {
+            printMessage(
+                    graphics,
+                    "CONGRATULATIONS!\nYOU WIN!\nFinal Score: 70"
+                            + "\nPress Space Bar to Restart"
+            );
+            return; // Verhindert, dass der GameOver-Bildschirm das überlagert
+        }
+
     }
+
 
     private void drawFoods(final Graphics graphics) {
         for (final GamePoint food : foods) {
@@ -364,4 +391,4 @@ public class snakegame extends JPanel implements ActionListener {
         RIGHT,
         LEFT
     }
-}
+    }

@@ -5,7 +5,7 @@ import javax.swing.*;
 public class SNAKE {
     //Länge und breite des spiel fensters bestimmen
     private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int HEIGHT = 800;
 
     public static void main(String[] args){
         //new frame instanziieren
