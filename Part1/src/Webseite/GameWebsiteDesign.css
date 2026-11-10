@@ -1,10 +1,10 @@
-/* Globale Resets & Farbvariablen aus dem Firewatch-Beispiel */
+/* Globale Resets & Farbvariablen aus dem Firewatch-Beispiel
 :root {
-    --bg-dark: #230c0f;      /* Tiefes Dunkelrot/Braun für den Hintergrund */
-    --accent-orange: #de6b21; /* Das ikonische Firewatch-Orange */
-    --accent-yellow: #f9a01b; /* Warmes Sonnengelb */
-    --text-light: #fce8cd;    /* Helles Cremeweiß für Text */
-    --card-bg: #36171b;       /* Etwas helleres Dunkelrot für Container */
+    --bg-dark: #230c0f;      /* Tiefes Dunkelrot/Braun für den Hintergrund
+    --accent-orange: #de6b21; /* Das ikonische Firewatch-Orange
+    --accent-yellow: #f9a01b; /* Warmes Sonnengelb
+    --text-light: #fce8cd;    /* Helles Cremeweiß für Text
+    --card-bg: #36171b;       /* Etwas helleres Dunkelrot für Container
 }
 
 * {
@@ -20,7 +20,7 @@ body {
     overflow-x: hidden;
 }
 
-/* HEADER MIT DEM FIREWATCH-STIL GRADIENT */
+/* HEADER MIT DEM FIREWATCH-STIL GRADIENT
 .hero-section {
     background: linear-gradient(to bottom, #f39c12, #e67e22, #d35400, var(--bg-dark));
     height: 70vh;
@@ -48,10 +48,10 @@ body {
     letter-spacing: 2px;
 }
 
-/* DIE SPIELE-MATRIX */
+/* DIE SPIELE-MATRIX
 .main-content {
     max-width: 1200px;
-    margin: -100px auto 0 auto; /* Schiebt den Content leicht in den Header hinein */
+    margin: -100px auto 0 auto; /* Schiebt den Content leicht in den Header hinein
     padding: 0 20px;
     position: relative;
     z-index: 10;
@@ -79,7 +79,7 @@ body {
     gap: 30px;
 }
 
-/* GAME CARDS IM STIL DER DESIGN-VORLAGE */
+/* GAME CARDS IM STIL DER DESIGN-VORLAGE
 .game-card {
     background-color: var(--bg-dark);
     border: 2px solid var(--accent-orange);
@@ -124,7 +124,7 @@ body {
     height: 40px; /* Hält Texte einheitlich */
 }
 
-/* BUTTONS */
+/* BUTTONS
 .play-btn {
     background-color: var(--accent-orange);
     color: var(--bg-dark);
@@ -143,7 +143,7 @@ body {
     background-color: var(--accent-yellow);
 }
 
-/* ZITAT-LEISTE */
+/* ZITAT-LEISTE
 .about-section {
     margin: 60px 0;
     text-align: center;
@@ -169,7 +169,7 @@ body {
     color: #8c686d;
 }
 
-/* FOOTER */
+/* FOOTER
 .footer {
     text-align: center;
     padding: 40px 20px;

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tea's small Arcade</title>
-    <!-- Laden der exakten Schriftarten für den Firewatch-Look -->
+    <!-- Laden der exakten Schriftarten für den Firewatch-Look
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root {
-            /* Dark Mode  */
+    /*    :root {
+            /* Dark Mode
             --bg-dark: #230c0f;
             --accent-orange: #de6b21;
             --accent-yellow: #f9a01b;
@@ -35,7 +35,7 @@
             --title-color: #36171b;
             --title-shadow: #fbd38d;
         }
-        * {
+     /*   * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -47,7 +47,7 @@
             font-family: 'Rubik', sans-serif;
             overflow-x: hidden;
         }
-        /* LIGHT/DARK MODE TOGGLE SWITCH */
+        /* LIGHT/DARK MODE TOGGLE SWITCH
         .theme-switch-container {
             position: absolute;
             top: 25px;
@@ -71,7 +71,7 @@
             background-color: var(--title-color);
             color: var(--text-main);
         }
-        /* HEADER MIT DEM SEHR SPEZIFISCHEN FIREWATCH STYLE */
+        /* HEADER MIT DEM SEHR SPEZIFISCHEN FIREWATCH STYLE
         .hero-section {
             background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end), var(--bg-dark));
             min-height: 45vh;
@@ -100,7 +100,7 @@
             text-transform: uppercase;
             letter-spacing: 4px;
         }
-        /* GAME HUB CONTENT */
+        /* GAME HUB CONTENT
         .main-content {
             max-width: 1200px;
             margin: 40px auto;
@@ -130,7 +130,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 35px;
         }
-        /* GAME CARDS */
+        /* GAME CARDS
         .game-card {
             background-color: var(--bg-dark);
             border: 2px solid var(--accent-orange);
@@ -193,7 +193,7 @@
             background-color: var(--accent-yellow);
             color: #230c0f;
         }
-        /* REZENSIONEN */
+        /* REZENSIONEN
         .about-section {
             margin: 60px 0;
             text-align: center;
@@ -218,7 +218,7 @@
             letter-spacing: 2px;
             opacity: 0.7;
         }
-        /* FOOTER */
+        /* FOOTER
         .footer {
             text-align: center;
             padding: 40px 20px;
@@ -238,25 +238,24 @@
 </head>
 <body>
 
-<!-- STEUERUNG LIGHT/DARK MODE -->
+<!-- STEUERUNG LIGHT/DARK MODE
 <div class="theme-switch-container">
     <button class="theme-btn" id="themeToggle" onclick="toggleTheme()">☀️ Light Mode</button>
 </div>
 
-<!-- HEADER / HERO SECTION --><header class="hero-section">
+<header class="hero-section">
     <div class="header-overlay">
         <h1 class="main-title">Tea's small Arcade</h1>
         <p class="subtitle">Classic games you can play</p>
     </div>
 </header>
-
-<!-- CONTENT WRAPPER -->
+ CONTENT WRAPPER
 <main class="main-content">
-    <!-- SPIELE-AUSWAHL -->
+    SPIELE-AUSWAHL
     <section class="games-section">
         <h2 class="section-title">Choose your game</h2>
         <div class="games-grid">
-            <!-- SPIEL 1: FLAPPY BIRD -->
+            SPIEL 1: FLAPPY BIRD
             <div class="game-card" id="card-flappy">
                 <div class="game-preview-box">
                     <div class="placeholder-icon">🦤</div>
@@ -268,7 +267,7 @@
                 </div>
             </div>
 
-            <!-- SPIEL 2: BLACKJACK -->
+            SPIEL 2: BLACKJACK
             <div class="game-card" id="card-blackjack">
                 <div class="game-preview-box">
                     <div class="placeholder-icon">🃏</div>
@@ -280,7 +279,7 @@
                 </div>
             </div>
 
-            <!-- SPIEL 3: SNAKE -->
+         SPIEL 3: SNAKE
             <div class="game-card" id="card-snake">
                 <div class="game-preview-box">
                     <div class="placeholder-icon">🐍</div>
@@ -295,7 +294,7 @@
     </section>
 </main>
 
-<!-- ========================================== -->
+ ==========================================
 <div id="game-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #230c0f; z-index: 9999; text-align: center; padding-top: 20px;">
     <button onclick="window.location.search = ''" style="padding: 12px 25px; background: #ff4d4d; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; margin-bottom: 20px; font-family: 'Cinzel', serif;">
         ← Zurück zur Spieleauswahl
@@ -307,7 +306,7 @@
     <div class="footer-logo">Tea's small Arcade</div>
 </footer>
 
-<!-- HIER WAR DER FEHLER: JETZT SIND BEIDE SKRIPTE SAUBER TRENNT -->
+HIER WAR DER FEHLER: JETZT SIND BEIDE SKRIPTE SAUBER TRENNT
 <script>
     // SMART TOGGLE LOGIK
     function toggleTheme() {
@@ -323,7 +322,7 @@
     }
 </script>
 
-<!-- Offizieller CheerpJ 5.0 Loader aus der Cloud -->
+ Offizieller CheerpJ 5.0 Loader aus der Cloud
 <script src="https://cjrtnc.leaningtech.com/5.0/loader.js"></script>
 
 <script type="module">
