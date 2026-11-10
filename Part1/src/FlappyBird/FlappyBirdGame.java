@@ -312,5 +312,4 @@ public class FlappyBirdGame extends JPanel implements ActionListener, KeyListene
     public void keyReleased(KeyEvent e) {
         // Wird nicht benötigt
     }
-
 }
