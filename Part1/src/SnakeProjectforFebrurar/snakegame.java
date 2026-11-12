@@ -17,13 +17,12 @@ import java.util.Random;
 import java.util.prefs.Preferences;
 
 public class snakegame extends JPanel implements ActionListener {
-
     private final int width;
     private final int height;
     private final int cellSize;
     private final Random random = new Random();
     private static final int FRAME_RATE = 20;
-    private static final int NUMBER_OF_APPLES = 70;
+    private static final int NUMBER_OF_APPLES = 300;
     private static final String HIGH_SCORE_KEY = "highScore";
 
     // Speicherort für Highscore
@@ -43,28 +42,23 @@ public class snakegame extends JPanel implements ActionListener {
         this.width = width;
         this.height = height;
         this.cellSize = 32;
-
         // Gespeicherten Highscore laden
         highScore = preferences.getInt(HIGH_SCORE_KEY, 0);
-
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.BLACK);
     }
 
     public void startGame() {
         resetGameData();
-
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         requestFocusInWindow();
-
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(final KeyEvent e) {
                 handleKeyEvent(e.getKeyCode());
             }
         });
-
         new Timer(1500 / FRAME_RATE, this).start();
     }
 
@@ -73,42 +67,37 @@ public class snakegame extends JPanel implements ActionListener {
             if (keyCode == KeyEvent.VK_SPACE) {
                 gameStarted = true;
             }
-        } else if (!gameOver) {
+        } else if (!gameOver && !gameWin) {
             switch (keyCode) {
                 case KeyEvent.VK_UP, KeyEvent.VK_W:
                     if (direction != Direction.DOWN) {
                         newDirection = Direction.UP;
                     }
                     break;
-
                 case KeyEvent.VK_DOWN, KeyEvent.VK_S:
                     if (direction != Direction.UP) {
                         newDirection = Direction.DOWN;
                     }
                     break;
-
                 case KeyEvent.VK_RIGHT, KeyEvent.VK_D:
                     if (direction != Direction.LEFT) {
                         newDirection = Direction.RIGHT;
                     }
                     break;
-
                 case KeyEvent.VK_LEFT, KeyEvent.VK_A:
                     if (direction != Direction.RIGHT) {
                         newDirection = Direction.LEFT;
                     }
                     break;
-
                 default:
                     break;
             }
         } else if (keyCode == KeyEvent.VK_SPACE) {
             gameStarted = false;
             gameOver = false;
-
+            gameWin = false;
             direction = Direction.RIGHT;
             newDirection = Direction.RIGHT;
-
             resetGameData();
         }
     }
@@ -116,52 +105,52 @@ public class snakegame extends JPanel implements ActionListener {
     private void resetGameData() {
         snake.clear();
         foods.clear();
-
         snake.add(new GamePoint(
                 (width / 2 / cellSize) * cellSize,
                 (height / 2 / cellSize) * cellSize
         ));
-
         for (int i = 0; i < NUMBER_OF_APPLES; i++) {
             generateFood();
         }
     }
 
     private void generateFood() {
-        GamePoint newFood;
+        // Schutz vor Endlosschleife: Nur generieren, wenn noch freie Plätze da sind
+        int totalFields = (width / cellSize) * (height / cellSize);
+        if (snake.size() + foods.size() >= totalFields) {
+            return;
+        }
 
+        GamePoint newFood;
         do {
             newFood = new GamePoint(
                     random.nextInt(width / cellSize) * cellSize,
                     random.nextInt(height / cellSize) * cellSize
             );
         } while (snake.contains(newFood) || foods.contains(newFood));
-
         foods.add(newFood);
     }
 
     /**Aktualisiert und speichert den Highscore.*/
     private void updateHighScore() {
         final int currentScore = snake.size() - 1;
-
         if (currentScore > highScore) {
             highScore = currentScore;
-
             // Highscore dauerhaft speichern
             preferences.putInt(HIGH_SCORE_KEY, highScore);
         }
     }
-    private void checkPerfectWin() {
+
+    private void gameWin() {
         // 1. Berechnen, wie viele Felder das Raster in der Breite und Höhe hat
         int totalColumns = width / cellSize;
         int totalRows = height / cellSize;
-
         // 2. Die Gesamtanzahl aller begehbaren Felder auf dem Spielfeld
         int maxPossibleSnakeSize = totalColumns * totalRows;
-
         // 3. Wenn die Schlange so groß ist wie das gesamte Spielfeld
         if (snake.size() == maxPossibleSnakeSize) {
             gameWin = true;
+            updateHighScore();
         }
     }
 
@@ -179,19 +168,15 @@ public class snakegame extends JPanel implements ActionListener {
 
         // Gesamtanzahl der Schlangenglieder holen
         int snakeLength = snake.size();
-
         for (int i = 0; i < snakeLength; i++) {
             final GamePoint point = snake.get(i);
-
             // Berechnet einen Wert zwischen 0.0 (Kopf) und 1.0 (Schwanzende)
             float ratio = (snakeLength > 1) ? (float) i / (snakeLength - 1) : 0.0f;
-
             // Startfarbe (Kopf): Reines Grün (RGB: 0, 255, 0)
             // Zielfarbe (Schwanz): Schönes Türkis (RGB: 0, 200, 255)
             int r = 0;
             int g = (int) (255 * (1.0f - ratio) + 200 * ratio);
             int b = (int) (255 * ratio);
-
             graphics.setColor(new Color(r, g, b));
             graphics.fillRect(
                     point.x,
@@ -210,33 +195,29 @@ public class snakegame extends JPanel implements ActionListener {
                             + "\nPress Space Bar to Reset"
             );
         }
+
         if (gameWin) {
+            final int currentScore = snake.size() - 1;
             printMessage(
                     graphics,
-                    "CONGRATULATIONS!\nYOU WIN!\nFinal Score: 70"
+                    "CONGRATULATIONS!\nYOU WIN!\nFinal Score: " + currentScore
                             + "\nPress Space Bar to Restart"
             );
-            return; // Verhindert, dass der GameOver-Bildschirm das überlagert
         }
-
     }
-
 
     private void drawFoods(final Graphics graphics) {
         for (final GamePoint food : foods) {
             // Apfel
             graphics.setColor(Color.RED);
-
             graphics.fillOval(
                     food.x + 2,
                     food.y + 2,
                     cellSize - 4,
                     cellSize - 4
             );
-
             // Blatt
             graphics.setColor(Color.GREEN);
-
             graphics.fillOval(
                     food.x + cellSize / 2,
                     food.y,
@@ -249,18 +230,15 @@ public class snakegame extends JPanel implements ActionListener {
     private void drawChessboard(final Graphics graphics) {
         final Color lightColor = new Color(0, 37, 64);
         final Color darkColor = new Color(0, 21, 41);
-
         for (int y = 0; y < height; y += cellSize) {
             for (int x = 0; x < width; x += cellSize) {
                 final int column = x / cellSize;
                 final int row = y / cellSize;
-
                 if ((row + column) % 2 == 0) {
                     graphics.setColor(lightColor);
                 } else {
                     graphics.setColor(darkColor);
                 }
-
                 graphics.fillRect(
                         x,
                         y,
@@ -277,118 +255,94 @@ public class snakegame extends JPanel implements ActionListener {
     ) {
         graphics.setColor(Color.WHITE);
         graphics.setFont(graphics.getFont().deriveFont(30F));
-
         int currentHeight = height / 3;
-
         final Graphics2D graphics2D = (Graphics2D) graphics;
         final var fontRenderContext =
                 graphics2D.getFontRenderContext();
-
         for (final String line : message.split("\n")) {
             final TextLayout layout = new TextLayout(
                     line,
                     graphics.getFont(),
                     fontRenderContext
             );
-
             final var bounds = layout.getBounds();
-
             final float targetWidth =
                     (float) (width - bounds.getWidth()) / 2;
-
             layout.draw(
                     graphics2D,
                     targetWidth,
                     currentHeight
             );
-
             currentHeight += graphics.getFontMetrics().getHeight();
         }
     }
 
     private void move() {
         direction = newDirection;
-
         final GamePoint head = snake.getFirst();
-
         final GamePoint newHead = switch (direction) {
             case UP -> new GamePoint(
                     head.x,
                     head.y - cellSize
             );
-
             case DOWN -> new GamePoint(
                     head.x,
                     head.y + cellSize
             );
-
             case LEFT -> new GamePoint(
                     head.x - cellSize,
                     head.y
             );
-
             case RIGHT -> new GamePoint(
                     head.x + cellSize,
                     head.y
             );
         };
-
         snake.addFirst(newHead);
-
         if (isCollision()) {
             gameOver = true;
-
-            // Neuen Kopf wieder entfernen
+// Neuen Kopf wieder entfernen
             snake.removeFirst();
-
-            // Highscore prüfen und dauerhaft speichern
+// Highscore prüfen und dauerhaft speichern
             updateHighScore();
-
             return;
         }
-
         if (foods.contains(newHead)) {
             foods.remove(newHead);
-
-            // Neuer Apfel, damit immer fünf Äpfel vorhanden sind
-            generateFood();
+// Siegesbedingung direkt nach dem Essen prüfen
+            gameWin();
+// Nur generieren, wenn wir nicht gerade gewonnen haben
+            if (!gameWin) {
+                generateFood();
+            }
         } else {
             snake.removeLast();
         }
     }
-
     private boolean isCollision() {
         final GamePoint head = snake.getFirst();
-
         final boolean invalidWidth =
                 head.x < 0 || head.x >= width;
-
         final boolean invalidHeight =
                 head.y < 0 || head.y >= height;
-
         if (invalidWidth || invalidHeight) {
             return true;
         }
-
         return snake.size() != new HashSet<>(snake).size();
     }
-
     @Override
     public void actionPerformed(final ActionEvent e) {
-        if (gameStarted && !gameOver) {
+        if (gameStarted && !gameOver && !gameWin) {
             move();
         }
-
         repaint();
     }
-
     private record GamePoint(int x, int y) {
     }
-
     private enum Direction {
         UP,
         DOWN,
         RIGHT,
         LEFT
     }
-    }
+}

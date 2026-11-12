@@ -265,7 +265,7 @@
                 <div class="game-info">
                     <h3>Flappy Bird</h3>
                     <p>Dodge the pipes and beat your own highscore!</p>
-                    <button class="play-btn" id="btn-flappy" onclick="window.location.search = '?game=Part1.jar'">Play now</button>
+                    <button class="play-btn" id="btn-flappy" onclick="window.location.search = '?game=Part1/src/FlappyBird/FlappyBirdGame'">Play now</button>
                 </div>
             </div>
 
@@ -277,7 +277,7 @@
                 <div class="game-info">
                     <h3>Blackjack</h3>
                     <p>Challenge the Dealer. Do you come closer to 21?</p>
-                    <button class="play-btn" id="btn-blackjack" onclick="window.location.search = '?game=Part1.jar'">Play now</button>
+                    <button class="play-btn" id="btn-blackjack" onclick="window.location.search = '?game=PPart1/src/BlackJack/Blackjack'">Play now</button>
                 </div>
             </div>
 
@@ -337,7 +337,7 @@
 
         try {
             // 1. Initialisiere die Java-Umgebung im Browser
-            await cheerpjInit({ version: 11 });
+            await cheerpjInit();
 
             document.getElementById("loading-text").innerText = "Download the complete Java-Archive...";
             cheerpjCreateDisplay(800, 600);
