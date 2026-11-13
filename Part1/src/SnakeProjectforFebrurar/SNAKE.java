@@ -2,7 +2,7 @@ package SnakeProjectforFebrurar;
 
 import javax.swing.*;
 
-public class SNAKE {
+public class  SNAKE {
     //Länge und breite des spiel fensters bestimmen
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
