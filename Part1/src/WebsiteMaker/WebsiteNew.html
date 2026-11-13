@@ -1,69 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tea's small Arcade</title>
-    <link href="https://fonts.googleapis.com/css2?family=Aleo:wght@900&family=Cinzel:wght@900&family=Rubik&display=swap%22
-
+    <link rel="stylesheet" href="WebDesign.css">
 </head>
 <body>
-
-<div class="theme-switch-container">
-    <button class="theme-btn" id="themeToggle" onclick="toggleTheme()">☀️ Light Mode</button>
-</div>
-
-<header class="hero-section compact">
-    <h1 class="main-title" id="game-title"></h1>
+<header class="hero-section">
+    <div>
+        <h1 class="main-title">Tea's small Arcade</h1>
+        <p class="subtitle">Classic games you can play</p>
+    </div>
 </header>
 
-<main class="main-content play-area">
-    <a class="play-btn" href="index.html">← Back to the Game menu</a>
-    <div id="loading-text">Game is loading... please wait a moment...</div>
-    <div class="game-stage" id="game-stage"></div>
+<main class="main-content">
+    <section class="games-section">
+        <h2 class="section-title">Choose your game</h2>
+
+        <div class="games-grid">
+            <article class="game-card">
+                <div class="game-preview-box"><span class="placeholder-icon">🦤</span></div>
+                <div class="game-info">
+                    <h3>Flappy Bird</h3>
+                    <p>Dodge the pipes and beat your own high score!</p>
+                    <a class="play-btn" href="Game.html?game=FlappyBird">Play now</a>
+                </div>
+            </article>
+
+            <article class="game-card">
+                <div class="game-preview-box"><span class="placeholder-icon">🃏</span></div>
+                <div class="game-info">
+                    <h3>Blackjack</h3>
+                    <p>Challenge the dealer. Can you get closer to 21?</p>
+                    <a class="play-btn" href="Game.html?game=Blackjack">Play now</a>
+                </div>
+            </article>
+
+            <article class="game-card">
+                <div class="game-preview-box"><span class="placeholder-icon">🐍</span></div>
+                <div class="game-info">
+                    <h3>Snake</h3>
+                    <p>Eat the apples, grow, and avoid crashing into the wall!</p>
+                    <a class="play-btn" href="Game.html?game=Snake">Play now</a>
+                </div>
+            </article>
+        </div>
+    </section>
 </main>
 
 <footer class="footer">
     <div class="footer-logo">Tea's small Arcade</div>
 </footer>
-
-<script src="WebDesign.css"></script>
-<script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
-<script>
-    // Only these games can be started; the jars are built by build-games.sh
-    const GAMES = {
-        FlappyBird: { title: "Flappy Bird", jar: "games/FlappyBird.jar", width: 420, height: 700 },
-        Blackjack: { title: "Blackjack", jar: "games/Blackjack.jar", width: 640, height: 660 },
-        Snake: {title: "Snake", jar:"../../../Snake.jar", width: 800, height:800}
-    };
-
-    (async () => {
-        const game = GAMES[new URLSearchParams(location.search).get("game")];
-        const loading = document.getElementById("loading-text");
-        if (!game) {
-            loading.textContent = "Unknown game. Please pick one from the menu.";
-            return;
-        }
-        document.getElementById("game-title").textContent = game.title;
-        document.title = game.title + " - Tea's small Arcade";
-
-        try {
-            await cheerpjInit({ version: 11 });
-            cheerpjCreateDisplay(game.width, game.height, document.getElementById("game-stage"));
-            // jwebserver has no Range support, which CheerpJ needs to read a jar over HTTP, so hand it the bytes
-            const response = await fetch(game.jar);
-            if (!response.ok) throw new Error("Could not fetch " + game.jar);
-            const path = "/str/" + game.jar.split("/").pop();
-            await cheerpOSAddStringFile(path, new Uint8Array(await response.arrayBuffer()));
-            loading.style.display = "none";
-            await cheerpjRunJar(path);
-        } catch (error) {
-            loading.textContent = "The game couldn't be loaded. Did you run ./build-games.sh?";
-            loading.style.display = "block";
-            console.error(error);
-        }
-    })();
-</script>
 </body>
 </html>
-

@@ -1,0 +1,66 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tea's small Arcade</title>
+    <link rel="stylesheet" href="WebDesign.css">
+</head>
+<body>
+<header class="hero-section game-hero">
+    <h1 class="main-title" id="game-title">Loading game...</h1>
+</header>
+
+<main class="main-content game-page">
+    <a class="play-btn back-button" href="WebsiteNew.html">← Back to the Game menu</a>
+    <p id="loading-text" role="status">The game is loading. Please wait...</p>
+    <div id="game-display"></div>
+</main>
+
+<footer class="footer">
+    <div class="footer-logo">Tea's small Arcade</div>
+</footer>
+
+<script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
+<script>
+    // Only these games can be started; the jars are built by build-games.sh
+    const GAMES = {
+        FlappyBird: { title: "Flappy Bird", jar: "../../../FlappyBird.jar", width: 420, height: 700 },
+        Blackjack: { title: "Blackjack", jar: "../../../Blackjack.jar", width: 640, height: 660 },
+        Snake: {title: "Snake", jar: "../../../Snake.jar", width: 800, height: 800}
+    };
+
+    const gameName = new URLSearchParams(location.search).get("game");
+    const game = GAMES[gameName];
+    const loading = document.getElementById("loading-text");
+    const loadGame = async () => {
+        if (!game) {
+            document.getElementById("game-title").textContent = "Game not selected";
+            loading.textContent = "Unknown game. Go back to the menu and choose a game.";
+        } else {
+            document.getElementById("game-title").textContent = game.title;
+            document.title = `${game.title} - Tea's small Arcade`;
+
+            try {
+                await cheerpjInit();
+                cheerpjCreateDisplay(
+                    game.width,
+                    game.height,
+                    document.getElementById("game-display")
+                );
+
+                loading.textContent = `Starting ${game.title}...`;
+                await cheerpjRunJar(game.jar);
+                loading.style.display = "none";
+            } catch (error) {
+                console.error("Could not start game:", error);
+                loading.textContent =
+                    `Could not start ${game.title}. Check that ${game.jar} exists in the website server's root and that the JAR has a valid Main-Class manifest entry.`;
+            }
+        }
+    }
+    loadGame();
+</script>
+</body>
+</html>
