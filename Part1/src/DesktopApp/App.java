@@ -1,6 +1,5 @@
 package DesktopApp;
 
-
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -11,9 +10,10 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainPart extends JPanel {
+public class App extends JPanel {
 
-    private final MainPartFunction functions;
+    // Enthält Funktionen für Farben, Theme-Wechsel und Spielstart
+    private final AppFunction functions;
     private JButton themeToggleBtn;
     private JPanel headerPanel;
     private JLabel mainTitleShadow;
@@ -25,19 +25,20 @@ public class MainPart extends JPanel {
     private JPanel footerPanel;
     private JLabel footerLabel;
 
-    // Liste zum Aktualisieren der Karten beim Theme-Wechsel
+    // Speichert die Spielkarten, damit ihre Farben beim Theme-Wechsel aktualisiert werden können
     private final List<GameCardComponents> cards = new ArrayList<>();
 
-    public MainPart() {
-        this.functions = new MainPartFunction();
+    public App() {
+        this.functions = new AppFunction();
         setLayout(new BorderLayout());
 
         initComponents();
-        applyTheme(); // Initiales Dark-Theme anwenden
+        applyTheme(); // Wendet das Start-Theme auf alle Komponenten an
     }
 
+    // Erstellt und ordnet alle Bereiche der Benutzeroberfläche an
     private void initComponents() {
-        // 1. HEADER MIT FIREWATCH-FARBVERLAUF
+        // Header mit Farbverlauf
         headerPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -45,7 +46,8 @@ public class MainPart extends JPanel {
                 Graphics2D g2d = (Graphics2D) g;
                 int w = getWidth();
                 int h = getHeight();
-                // Farbverlauf von Orange/Gelb in den dunklen Hintergrund
+
+                // Zeichnet einen Verlauf von der Akzentfarbe zum Hintergrund
                 GradientPaint gp = new GradientPaint(
                         0, 0, functions.getGradientStart(),
                         0, h, functions.getBgDark()
@@ -58,24 +60,27 @@ public class MainPart extends JPanel {
         headerPanel.setPreferredSize(new Dimension(0, 240));
         headerPanel.setBorder(new EmptyBorder(20, 30, 20, 30));
 
-
-        // Light/Dark Mode Toggle oben rechts
+        // Leiste oben rechts mit dem Theme-Schalter
         JPanel topBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topBar.setOpaque(false);
+
         themeToggleBtn = new JButton("☀ Light Mode");
         themeToggleBtn.setFont(new Font("Serif", Font.BOLD, 14));
         themeToggleBtn.setFocusPainted(false);
         themeToggleBtn.setContentAreaFilled(false);
         themeToggleBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Wechselt das Theme und aktualisiert danach die Farben
         themeToggleBtn.addActionListener(e -> {
             functions.toggleTheme();
             themeToggleBtn.setText(functions.isLightMode() ? "☾ Dark Mode" : "☀ Light Mode");
             applyTheme();
         });
+
         topBar.add(themeToggleBtn);
         headerPanel.add(topBar, BorderLayout.NORTH);
 
-        // Titel & Untertitel mit Schatten-Effekt (LayeredPane für exakten 4px Versatz)
+        // Titelbereich mit zusätzlichem Label als Schattierung
         JLayeredPane titlePane = new JLayeredPane();
         titlePane.setPreferredSize(new Dimension(900, 140));
 
@@ -83,14 +88,16 @@ public class MainPart extends JPanel {
         mainTitle.setFont(new Font("Serif", Font.BOLD, 54));
         mainTitle.setBounds(0, 10, 900, 70);
 
+        // Das leicht versetzte Label erzeugt den Schatteneffekt
         mainTitleShadow = new JLabel("TEA'S SMALL ARCADE", SwingConstants.CENTER);
         mainTitleShadow.setFont(new Font("Serif", Font.BOLD, 54));
-        mainTitleShadow.setBounds(4, 14, 900, 70); // 4px Schatten-Versatz wie im CSS
+        mainTitleShadow.setBounds(4, 14, 900, 70);
 
         subtitle = new JLabel("CLASSIC GAMES YOU CAN PLAY", SwingConstants.CENTER);
         subtitle.setFont(new Font("Serif", Font.BOLD, 16));
         subtitle.setBounds(0, 85, 900, 30);
 
+        // Legt die Labels in Ebenen übereinander
         titlePane.add(mainTitleShadow, Integer.valueOf(1));
         titlePane.add(mainTitle, Integer.valueOf(2));
         titlePane.add(subtitle, Integer.valueOf(2));
@@ -102,21 +109,22 @@ public class MainPart extends JPanel {
 
         add(headerPanel, BorderLayout.NORTH);
 
-        // 2. HAUPTBEREICH MIT DEN 3 SPIEL-KARTEN
+        // Hauptbereich, in dem die drei Spielkarten angezeigt werden
         centerWrapper = new JPanel(new GridBagLayout());
-        centerWrapper.setBorder(new EmptyBorder(10, 60, 30, 60));
+        centerWrapper.setBorder(new EmptyBorder(20, 60, 40, 60));
 
         gamesSection = new JPanel(new BorderLayout(0, 30));
         gamesSection.setPreferredSize(new Dimension(1150, 480));
 
         sectionTitle = new JLabel("CHOOSE YOUR GAME", SwingConstants.CENTER);
-        sectionTitle.setFont(new Font("Serif", Font.BOLD, 26));
+        sectionTitle.setFont(new Font("Serif", Font.BOLD, 35));
         gamesSection.add(sectionTitle, BorderLayout.NORTH);
 
-        // 3 Spalten nebeneinander für deine 3 Spiele
+        // Ordnet die Spielkarten in drei gleich breite Spalten an
         JPanel gamesGrid = new JPanel(new GridLayout(1, 3, 35, 0));
         gamesGrid.setOpaque(false);
 
+        // Erstellt die Karten und gibt den jeweiligen JAR-Dateipfad mit
         gamesGrid.add(createGameCard(
                 "🦤",
                 "FLAPPY BIRD",
@@ -142,7 +150,7 @@ public class MainPart extends JPanel {
         centerWrapper.add(gamesSection);
         add(centerWrapper, BorderLayout.CENTER);
 
-        // 3. FOOTER UNTEN
+        // Fußzeile am unteren Fensterrand
         footerPanel = new JPanel(new GridBagLayout());
         footerPanel.setPreferredSize(new Dimension(0, 70));
         footerLabel = new JLabel("TEA'S SMALL ARCADE");
@@ -152,27 +160,31 @@ public class MainPart extends JPanel {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
+    // Erstellt eine Spielkarte mit Symbol, Beschreibung und Startknopf
     private JPanel createGameCard(String icon, String title, String description, String jarName) {
         GameCardComponents comp = new GameCardComponents();
 
         comp.cardPanel = new JPanel(new BorderLayout());
 
-        // Vorschaubox oben mit Emoji/Icon
+        // Oberer Vorschaubereich mit Spielsymbol
         comp.previewBox = new JPanel(new GridBagLayout());
-        comp.previewBox.setPreferredSize(new Dimension(0, 170));
+        comp.previewBox.setPreferredSize(new Dimension(0, 210));
         comp.iconLabel = new JLabel(icon);
-        comp.iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 64));
+        comp.iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 80));
         comp.previewBox.add(comp.iconLabel);
 
-        // Info-Bereich unten
+        // Unterer Bereich mit Titel, Beschreibung und Startknopf
         comp.infoPanel = new JPanel(new BorderLayout(0, 10));
         comp.infoPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         comp.titleLabel = new JLabel(title, SwingConstants.CENTER);
         comp.titleLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        // HTML-Wrapping für sauberen mehrzeiligen Text
-        comp.descLabel = new JLabel("<html><div style='text-align: center;'>" + description + "</div></html>", SwingConstants.CENTER);
+        // HTML ermöglicht einen zentrierten und mehrzeiligen Beschreibungstext
+        comp.descLabel = new JLabel(
+                "<html><div style='text-align: center;'>" + description + "</div></html>",
+                SwingConstants.CENTER
+        );
         comp.descLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
 
         comp.playBtn = new JButton("PLAY NOW");
@@ -181,10 +193,10 @@ public class MainPart extends JPanel {
         comp.playBtn.setBorder(new EmptyBorder(12, 20, 12, 20));
         comp.playBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Klick startet das Spiel über MainPartFunction
+        // Startet das Spiel, wenn der Knopf angeklickt wird
         comp.playBtn.addActionListener(e -> functions.launchGame(jarName));
 
-        // Hover-Effekt wie im CSS (.play-btn:hover)
+        // Ändert die Farben des Knopfs, wenn die Maus darüberfährt
         comp.playBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -206,13 +218,12 @@ public class MainPart extends JPanel {
         comp.cardPanel.add(comp.previewBox, BorderLayout.NORTH);
         comp.cardPanel.add(comp.infoPanel, BorderLayout.CENTER);
 
+        // Speichert die Komponenten für spätere Theme-Aktualisierungen
         cards.add(comp);
         return comp.cardPanel;
     }
 
-    /**
-     * Wendet alle Farben für Dark- oder Light-Mode live auf das gesamte UI an
-     */
+    // Aktualisiert die Farben der Oberfläche passend zum aktuellen Theme
     private void applyTheme() {
         Color bgDark = functions.getBgDark();
         Color accentOrange = functions.getAccentOrange();
@@ -225,20 +236,20 @@ public class MainPart extends JPanel {
         setBackground(bgDark);
         centerWrapper.setBackground(bgDark);
 
-        // Toggle-Button Styling
+        // Gestaltung des Theme-Schalters
         themeToggleBtn.setForeground(titleColor);
         themeToggleBtn.setBorder(new CompoundBorder(
                 new LineBorder(titleColor, 2),
                 new EmptyBorder(6, 14, 6, 14)
         ));
 
-        // Header-Texte
+        // Farben der Texte im Header
         mainTitle.setForeground(titleColor);
         mainTitleShadow.setForeground(titleShadow);
         subtitle.setForeground(titleColor);
         headerPanel.repaint();
 
-        // Spiele-Container
+        // Farben und Rahmen des Spielebereichs
         gamesSection.setBackground(cardBg);
         gamesSection.setBorder(new CompoundBorder(
                 new LineBorder(accentOrange, 2),
@@ -246,7 +257,7 @@ public class MainPart extends JPanel {
         ));
         sectionTitle.setForeground(accentOrange);
 
-        // Alle 3 Spiel-Karten einfärben
+        // Aktualisiert die Farben aller Spielkarten
         for (GameCardComponents c : cards) {
             c.cardPanel.setBackground(bgDark);
             c.cardPanel.setBorder(new LineBorder(accentOrange, 2));
@@ -261,11 +272,14 @@ public class MainPart extends JPanel {
             c.playBtn.setBackground(accentOrange);
             c.playBtn.setForeground(Color.WHITE);
         }
-// Footer
+
+        // Farben und obere Linie der Fußzeile
         footerPanel.setBackground(previewBg);
         footerPanel.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, accentOrange));
         footerLabel.setForeground(accentOrange);
     }
+
+    // Bündelt die Swing-Komponenten einer Spielkarte
     private static class GameCardComponents {
         JPanel cardPanel;
         JPanel previewBox;
@@ -275,15 +289,17 @@ public class MainPart extends JPanel {
         JLabel descLabel;
         JButton playBtn;
     }
-    // Main-Methode: Startet direkt im Vollbildmodus auf deinem HP-Laptop
+
+    // Startet das Hauptfenster im maximierten Zustand
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Tea's small Arcade");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-// Zieht das Fenster automatisch über den gesamten Bildschirm des Laptops
+
+            // Maximiert das Fenster auf dem Bildschirm
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setMinimumSize(new Dimension(1000, 700));
-            frame.setContentPane(new MainPart());
+            frame.setContentPane(new App());
             frame.setVisible(true);
         });
     }
