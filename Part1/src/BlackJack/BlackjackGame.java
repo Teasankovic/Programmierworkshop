@@ -33,7 +33,7 @@ private char currency = '$';
             }
 
             public String getImagePath() {
-                return "./Cards/" + value + "-" + type + ".png";
+                return "/BlackJack/Cards/" + value + "-" + type + ".png";
             }
         }
         ArrayList<Card> deck;
@@ -67,7 +67,7 @@ private char currency = '$';
         try {
 
             //Versteckte karte vom DEALER
-            Image hiddenCardImg = new ImageIcon(getClass().getResource("./Cards/BACK.png")).getImage();
+            Image hiddenCardImg = new ImageIcon(getClass().getResource("/BlackJack/Cards/BACK.png")).getImage();
             if (!stayButton.isEnabled()) {
                 hiddenCardImg = new ImageIcon(getClass().getResource(hiddenCard.getImagePath())).getImage();
             }
