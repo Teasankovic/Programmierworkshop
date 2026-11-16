@@ -1,24 +1,27 @@
 package day5;
 
+// Scanner wird verwendet, um Eingaben über die Konsole einzulesen.
+
 import java.util.Scanner;
 
 
-
-
-
 public class MyGame {
+    // Ein Scanner-Objekt liest die Eingaben der Spieler
     static Scanner scanner = new Scanner(System.in);
+
+    // Erstellt ein Inventar-Objekt, das im Spiel verwendet wird.
     static Inventory inventar = new Inventory();
+
+    // Speichert den Checkpoint
     private static int checkpoint = 1;
-//KP was für ein getter oder setter hier sinn machen würde man
 
     static void main(String[] args) {
 
         System.out.println("\u001B[1mVIKI's Million Dollar Heist\u001B[0m");
 
-        // Getter und setter für das inventar machen  das inventar m´noch mit eiuner id verbinden das schreib fehler vermiede werden können
-
+// Die Schleife läuft, bis das Spiel mit System.exit beendet wird
         while (true) {
+            // Je nach Checkpoint wird die Spielszene aufgerufen
             switch (checkpoint) {
                 case 1:
                     checkpoint1Museum();
@@ -32,6 +35,7 @@ public class MyGame {
                 case 4:
                     checkpoint4Treasure();
                     break;
+                // Dieser Fall sollte normalerweise nicht eintreten
                 default:
                     System.out.println("Kritischer Fehler: Ungültiger Checkpoint!");
                     scanner.close();
@@ -40,6 +44,8 @@ public class MyGame {
             }
         }
     }
+
+    // Zeigt den ersten Checkpoint vor dem Museum und verarbeitet die Entscheidungen
     private static void checkpoint1Museum() {
         System.out.println("""
                 Your name is Viki and you have become the most wanted robber in the 21st Century...
@@ -59,6 +65,7 @@ public class MyGame {
 
 
             boolean nutzeItem = nutzeItem("gloves");
+
             {
                 System.out.println("Okay, lets have fun!");
                 //Finde den grund für die doppelte eingabe der handschuhe nicht
@@ -73,14 +80,20 @@ public class MyGame {
                 System.out.println("[1] Use the basement window on the Backside of the Westwing");
                 System.out.println("[2] The Roof Hatch directly over the Sculpture Gallery");
 
+                // Liest die erste Entscheidung ein
                 String wahl = holeEingabe();
+
+                // Prüft, welche Möglichkeit gewählt wurde
                 if (wahl.equals("1")) {
                     System.out.println("\nViki sneeks to the basement window. It's made out of massive steel witih a thick Lock.\n" +
                             "❌ System-Message: You don't have a crowbar! Thats kinda the wrong way.");
                 } else if (wahl.equals("2")) {
                     System.out.println("\nYou skillfully climb the scaffolding on the façade up to the glass roof hatch.\n" +
-
                             "How do you open it?");
+
+
+
+
                     System.out.println("[1] Smash in the glass with your fist, making a loud noise\"");
                     System.out.println("[2] Open the duffel bag and use a tool\"");
 
@@ -89,8 +102,10 @@ public class MyGame {
 
                         if (wahlHatch.equals("1")) {
                             System.out.println("\n🚨 The glass shatters loudly! Sirens wail instantly!");
-                            triggerGameOver(1);
+                            triggerGameOver(1);// Beendet den Versuch und bietet die Game-Over-Auswahl an
+
                         } else if (wahlHatch.equals("2")) {
+
                             if (nutzeItem("glass cutter")) {
                                 System.out.println("\nPerfect! You cut a circle into the glass and rappel down.\n");
                                 checkpoint = 2; // Aufstieg in den nächsten Abschnitt
@@ -107,6 +122,7 @@ public class MyGame {
             }
         }
     }
+
     private static void checkpoint2Gallery() {
         System.out.println("--- 🏁 CHECKPOINT 2: IN THE GALLERY ---\n" +
                 "You land in the shadows of the gallery. It is pitch black.\n" +
@@ -128,45 +144,45 @@ public class MyGame {
         }
     }
 
-       private static void checkpoint3Security() {
-            System.out.println("--- 🏁 CHECKPOINT 3: THE CORRIDOR ---\n" +
-                    "You reach the hallway leading to the vault. A night guard is strolling around.\n" +
+    private static void checkpoint3Security() {
+        System.out.println("--- 🏁 CHECKPOINT 3: THE CORRIDOR ---\n" +
+                "You reach the hallway leading to the vault. A night guard is strolling around.\n" +
 
-                    "He is standing right between you and the diamonds. How do you get past him?");
+                "He is standing right between you and the diamonds. How do you get past him?");
 
-            System.out.println("[1] Camera hacking: Start the robot vacuum at the other end as a distraction");
-            System.out.println("[2] Mechanically sabotage the fuse box on the wall");
+        System.out.println("[1] Camera hacking: Start the robot vacuum at the other end as a distraction");
+        System.out.println("[2] Mechanically sabotage the fuse box on the wall");
 
-            String wahl = holeEingabe();
+        String wahl = holeEingabe();
 
-            if (wahl.equals("1")) {
-                System.out.println("\n🚨 The distance is too big so the robot vacuum doesn't start\n" +
-                        " and the Guard turns around and sees you!");
-                        triggerGameOver(3);
+        if (wahl.equals("1")) {
+            System.out.println("\n🚨 The distance is too big so the robot vacuum doesn't start\n" +
+                    " and the Guard turns around and sees you!");
+            triggerGameOver(3);
 
-            } else if (wahl.equals("2")) {
-                System.out.println("\nYou are standing in front of the metal cover of the electrical box.");
+        } else if (wahl.equals("2")) {
+            System.out.println("\nYou are standing in front of the metal cover of the electrical box.");
 
-                if (nutzeItem("screwdriver")) {
-                    System.out.println("\n*Fizz!* A short circuit extinguishes all the lights. The guard curses in the dark.");
+            if (nutzeItem("screwdriver")) {
+                System.out.println("\n*Fizz!* A short circuit extinguishes all the lights. The guard curses in the dark.");
 
-                    System.out.println("[1] Use the absolute darkness and walk past quietly");
-                    System.out.println("[2] Run loudly while he can't see");
+                System.out.println("[1] Use the absolute darkness and walk past quietly");
+                System.out.println("[2] Run loudly while he can't see");
 
-                    String unterWahl = holeEingabe();
-                    if (unterWahl.equals("1")) {
-                        System.out.println("\nYou slip past him silently, like a ghost.");
-                        checkpoint = 4;
-                    } else if (unterWahl.equals("2")) {
-                        System.out.println("\n🚨 He hears your heavy footsteps and fires blindly in your direction—a hit!");
-                        triggerGameOver(3);
-                    } else {
-                        System.out.println("\n❌ Invalid input. Please choose 1 or 2.");
-                    }
+                String unterWahl = holeEingabe();
+                if (unterWahl.equals("1")) {
+                    System.out.println("\nYou slip past him silently, like a ghost.");
+                    checkpoint = 4;
+                } else if (unterWahl.equals("2")) {
+                    System.out.println("\n🚨 He hears your heavy footsteps and fires blindly in your direction—a hit!");
+                    triggerGameOver(3);
+                } else {
+                    System.out.println("\n❌ Invalid input. Please choose 1 or 2.");
                 }
-
             }
+
         }
+    }
 
     private static void checkpoint4Treasure() {
         System.out.println("--- 🏁 CHECKPOINT 4: THE TREASURY ---\n" +
@@ -219,24 +235,31 @@ public class MyGame {
         }
     }
 
-
+    // Fragt nach einer Auswahl und gibt die Eingabe als Text zurück
     private static String holeEingabe() {
         System.out.print("Your Choice: ");
+
+        // trim entfernt Leerzeichen am Anfang und Ende der Eingabe
         return scanner.nextLine().trim();
     }
 
+    // Prüft, ob die Spielerin das benötigte Item im Inventar auswählt
     private static boolean nutzeItem(String korrektesItem) {
+        // Zeigt die Gegenstände mit ihren Nummern an
         inventar.showInventory();
 
+        // Fragt nach einer Nummer oder einem englischen Namen
         System.out.print(
                 "What Item do you type in? "
                         + "(english Name or Inventory ID): "
         );
-
+        // Liest die Auswahl ein und entfernt überflüssige Leerzeichen
         String eingabe = scanner.nextLine().trim();
 
+        // Sucht das Item anhand der Nummer oder des Namens
         String ausgewaehltesItem = inventar.findItem(eingabe);
 
+        // null bedeutet, dass kein passendes Item gefunden wurde
         if (ausgewaehltesItem == null) {
             System.out.println("❌ This Item doesn't exist in your Inventory.");
             return false;
@@ -249,33 +272,40 @@ public class MyGame {
                         ausgewaehltesItem.lastIndexOf(" ")
                 );
 
+        // Vergleicht den ausgewählten Namen mit dem benötigten Item
         if (ausgewaehlterName.equalsIgnoreCase(korrektesItem)) {
             return true;
         }
-
+        // Wird ausgeführt, wenn das Item existiert, aber nicht das benötigte ist
         System.out.println("❌ This isn't the correct Item. Think again.");
         return false;
     }
-
+    // Zeigt Game Over an und lässt die Spielerin weiterspielen oder abbrechen
     private static void triggerGameOver(int aktuellerCheckpoint) {
         System.out.println("\n🛑 --- GAME OVER --- 🛑\n" +
                 "You got caught or made a mistake.");
 
+        // Solange keine gültige Entscheidung getroffen wurde, wird das in der Konsole angezeigt
         boolean entschieden = false;
         while (!entschieden) {
             System.out.println("[1] Continue on (" + aktuellerCheckpoint + ") last Checkpoint");
             System.out.println("[2] End Game");
 
+            // Liest die Auswahl ein
             String wahl = holeEingabe();
 
+            // Setzt den Checkpoint zurück, damit dort weitergespielt wird
             if (wahl.equals("1")) {
                 checkpoint = aktuellerCheckpoint;
                 entschieden = true;
+
+                // Schließt den Scanner und beendet das Programm
             } else if (wahl.equals("2")) {
                 System.out.println("Thank you for playing!");
                 scanner.close();
                 System.exit(0);
             } else {
+                // Fragt bei einer ungültigen Eingabe erneut
                 System.out.println("❌ Invalid Input. Please choose either 1 or 2.");
             }
 
