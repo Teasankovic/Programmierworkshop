@@ -13,7 +13,7 @@ public class MyGame {
     static Inventory inventar = new Inventory();
 
     // Speichert den Checkpoint
-    private static int checkpoint = 1;
+    private static int checkpoint = 0;
 
     static void main(String[] args) {
 
@@ -23,6 +23,9 @@ public class MyGame {
         while (true) {
             // Je nach Checkpoint wird die Spielszene aufgerufen
             switch (checkpoint) {
+                case 0:
+                    checkpoint0Start();
+                    break;
                 case 1:
                     checkpoint1Museum();
                     break;
@@ -44,35 +47,49 @@ public class MyGame {
             }
         }
     }
+    private static void checkpoint0Start() {
+        {
+            System.out.println("""
+                    Your name is Viki and you have become the most wanted robber in the 21st Century...
+                    With your 22 years of age you are wanted in 14 Countries so far but you dont want to stop.
+                    You do this all for fun.
+                    Your Trademark is a red Smiley that you leave behind
+                    That is why your next Million Dollar Heist is planned
+                    The Louvre and it's Diamonds.... You want them to be yours.
+                    You already stole $161.777.222 in valuable goods.
+                    AND YOU DONT WANT TO STOP THE FUN!!!
+                    """);
+
+            System.out.println("Are you ready? We have to hide our fingerprints....\n" +
+                    "What do you do?");
+            System.out.println("[1] Put on the gloves");
+            System.out.println("[2] Go in barehanded");
+
+            // Liest die Entscheidung ein (genau wie bei Checkpoint 1)
+            String wahl = holeEingabe();
+
+            // Prüft die Entscheidung
+            if (wahl.equals("1")) {
+                // Hier wird das Item genutzt, wenn Option 1 gewählt wurde
+                if (nutzeItem("gloves")) {
+                    System.out.println("Okay, let's have fun!");
+                    System.out.println("With your Duffelbag and your tools you make your way to the Museum.");
+                    System.out.println("");
+                    checkpoint1Museum(); // Weiter zum nächsten Checkpoint!
+                }
+            } else if (wahl.equals("2")) {
+                System.out.println("❌ System Message: You can't go in there leaving your fingerprints like you wanna get caught!");
+                triggerGameOver(0);
+            } else {
+                System.out.println("❌ Invalid input! Please type 1 or 2.");
+                checkpoint0Start(); // Startet die Abfrage bei falscher Eingabe neu
+            }
+        }
+    }
 
     // Zeigt den ersten Checkpoint vor dem Museum und verarbeitet die Entscheidungen
     private static void checkpoint1Museum() {
-        System.out.println("""
-                Your name is Viki and you have become the most wanted robber in the 21st Century...
-                With your 22 years of age you are wanted in 14 Countries so far but you dont want to stop.
-                You do this all for fun.
-                Your Trademark is a red Smiley that you leave behind
-                That is why your next Million Dollar Heist is planned
-                The Louvre and it's Diamonds.... You want them to be yours.
-                You already stole $161.777.222 in valuable goods.
-                AND YOU DONT WANT TO STOP THE FUN!!!
-                """);
 
-        //Die Handschuhe durch die eingabe am start anziehen!! erledigt //
-        System.out.println("Are you ready? We have to hide our fingerprints....");
-
-        {
-
-
-            boolean nutzeItem = nutzeItem("gloves");
-
-            {
-                System.out.println("Okay, lets have fun!");
-                //Finde den grund für die doppelte eingabe der handschuhe nicht
-                // doch hab eingabe zwei mal im code gehabt
-
-
-                System.out.println("With your Duffelbag and your tools you make your way to the Museum");
 
                 System.out.println("--- 🏁 CHECKPOINT 1: INFRONT OF THE MUSEUM ---\n" +
                         "You stand in the shadows of the Louvre.\n" +
@@ -120,8 +137,8 @@ public class MyGame {
 
                 }
             }
-        }
-    }
+
+
 
     private static void checkpoint2Gallery() {
         System.out.println("--- 🏁 CHECKPOINT 2: IN THE GALLERY ---\n" +
